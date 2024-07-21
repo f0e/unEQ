@@ -10,15 +10,23 @@ from . import console
 
 def parse_eq_file(file_path):
     filters = []
-    preamp_gain = 0.0
+
     with open(file_path, "r") as f:
         for line in f:
             if line.strip() and not line.strip().startswith("#"):
+                # Preamp
                 preamp_match = re.match(r"Preamp: ([\-\d\.]+) dB", line)
                 if preamp_match:
                     preamp_gain = float(preamp_match.group(1))
+
+                    preamp_gain = -preamp_gain
+
+                    filter_str = f"volume={preamp_gain}dB"
+                    filters.append(filter_str)
+
                     continue
 
+                # Filters
                 filter_match = re.match(
                     r"Filter (\d+): ON (\w+) Fc (\d+) Hz Gain ([\-\d\.]+) dB(?: Q ([\d\.]+))?",
                     line,
@@ -41,9 +49,7 @@ def parse_eq_file(file_path):
 
                     filters.append(filter_str)
 
-    preamp_gain = -preamp_gain
-
-    return f"volume={preamp_gain}dB," + ",".join(filters)
+    return ",".join(filters)
 
 
 def generate_ffmpeg_command(input_path: Path, eq_file_path: Path):

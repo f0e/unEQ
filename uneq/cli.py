@@ -1,30 +1,8 @@
-import shlex
 from pathlib import Path
 
 import rich_click as click
-from ffmpeg_progress_yield import FfmpegProgress
-from rich.console import Console
-from rich.progress import Progress
 
-from .uneq import generate_ffmpeg_command
-
-console = Console(highlight=False)
-
-
-def uneq(input_path: Path, eq_file_path: Path):
-    console.print(f"Running uneq for file [dim]{input_path}[/dim] with EQ loaded from [dim]{eq_file_path}[/dim]")
-
-    ffmpeg_command, output_path = generate_ffmpeg_command(input_path, eq_file_path)
-
-    with Progress(console=console) as progress:
-        task = progress.add_task("[red]Encoding...", total=100)
-
-        ff = FfmpegProgress(shlex.split(ffmpeg_command))
-
-        for ff_progress in ff.run_command_with_progress():
-            progress.update(task, completed=ff_progress)
-
-    console.print(f"Done, wrote output file to [dim]{output_path}[/dim]")
+from .uneq import uneq
 
 
 @click.command()

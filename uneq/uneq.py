@@ -1,5 +1,11 @@
 import re
+import shlex
 from pathlib import Path
+
+from ffmpeg_progress_yield import FfmpegProgress
+from rich.progress import Progress
+
+from . import console
 
 
 def parse_eq_file(file_path):
@@ -46,6 +52,22 @@ def generate_ffmpeg_command(input_path: Path, eq_file_path: Path):
     output_path = input_path.parent / f"uneq_{input_path.name}"
 
     return (
-        f'ffmpeg -y -i "{input_path}" -c:v copy -af "{filters_command}" "{output_path}"',
+        f'ffmpeg -y -i "{input_path}" -map 0 -c:v copy -filter:a:0 "{filters_command}" "{output_path}"',
         output_path,
     )
+
+
+def uneq(input_path: Path, eq_file_path: Path):
+    console.print(f"Running uneq for file [dim]{input_path}[/dim] with EQ loaded from [dim]{eq_file_path}[/dim]")
+
+    ffmpeg_command, output_path = generate_ffmpeg_command(input_path, eq_file_path)
+
+    with Progress(console=console) as progress:
+        task = progress.add_task("[red]Encoding...", total=100)
+
+        ff = FfmpegProgress(shlex.split(ffmpeg_command))
+
+        for ff_progress in ff.run_command_with_progress():
+            progress.update(task, completed=ff_progress)
+
+    console.print(f"Done, wrote output file to [dim]{output_path}[/dim]")

@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "uneq"
+version = "0.1.0"
+description = ""
+authors = ["f0e <7321764+f0e@users.noreply.github.com>"]
+readme = "readme.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+rich-click = "^1.8.3"
+rich = "^13.7.1"
+ffmpeg-progress-yield = "^0.7.8"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.4"
+black = "^24.4.2"
+isort = "^5.13.2"
+mypy = "^1.11.0"
+pre-commit = "^3.7.1"
+
+[tool.poetry.scripts]
+uneq = 'uneq.cli:cli'
+
+[tool.black]
+line-length = 130
+
+[tool.ruff]
+lint.ignore = [
+    "E501", # line length
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+check_untyped_defs = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

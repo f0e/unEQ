@@ -50,6 +50,8 @@ def parse_eq_file(file_path):
 
                     filters.append(filter_str)
 
+                    continue
+
     return ",".join(filters)
 
 

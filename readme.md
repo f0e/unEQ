@@ -6,6 +6,10 @@ CLI application for removing EQ from video files. Supports Equaliser APO configs
 
 - FFmpeg
 
+## Installation
+
+`pip install uneq`
+
 ## Usage
 
 `uneq -i [video path] -e [eq config path]`

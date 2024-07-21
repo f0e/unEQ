@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+  contents: read
+
+jobs:
+  pypi-publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/uneq
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+
+      # https://johnfraney.ca/blog/how-to-publish-a-python-package-with-poetry-and-github-actions
+      - name: Update PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Update Poetry configuration
+        run: poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        run: poetry install --sync --no-interaction
+
+      - name: Package project
+        run: poetry build
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

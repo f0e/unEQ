@@ -14,8 +14,9 @@ from .uneq import uneq
     required=True,
 )
 @click.option("-e", "--eq-path", type=click.Path(exists=True), help="EQ file path", required=True)
-def cli(input: click.Path, eq_path: click.Path):
-    uneq(Path(input), Path(eq_path))
+@click.option("--copy-meta", type=bool, help="Copy file metadata (creation date, etc)")
+def cli(input: click.Path, eq_path: click.Path, copy_meta: bool = False):
+    uneq(Path(input), Path(eq_path), copy_meta)
 
 
 if __name__ == "__main__":

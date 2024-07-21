@@ -64,7 +64,7 @@ def generate_ffmpeg_command(input_path: Path, eq_file_path: Path):
     )
 
 
-def uneq(input_path: Path, eq_file_path: Path):
+def uneq(input_path: Path, eq_file_path: Path, copy_meta: bool):
     console.print(f"Running uneq for file [dim]{input_path}[/dim] with EQ loaded from [dim]{eq_file_path}[/dim]")
 
     ffmpeg_command, output_path = generate_ffmpeg_command(input_path, eq_file_path)
@@ -77,7 +77,8 @@ def uneq(input_path: Path, eq_file_path: Path):
         for ff_progress in ff.run_command_with_progress():
             progress.update(task, completed=ff_progress)
 
-    # Copy metadata (modified date etc)
-    shutil.copystat(input_path, output_path)
+    if copy_meta:
+        # Copy metadata (modified date etc)
+        shutil.copystat(input_path, output_path)
 
     console.print(f"Done, wrote output file to [dim]{output_path}[/dim]")

@@ -16,6 +16,10 @@ CLI application for removing EQ from video files.
 
 e.g. `uneq -i "C:/Videos/video.mp4" -e "C:/Program Files/EqualizerAPO/config/peace.txt"`
 
+## Options
+
+To see options, run `uneq --help`.
+
 ## Current limitations
 
 - Only supports Equaliser APO configs (Peace supported)

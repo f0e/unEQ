@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "uneq"
-version = "0.1.5"
+version = "0.1.6"
 description = ""
 authors = ["f0e <7321764+f0e@users.noreply.github.com>"]
 readme = "readme.md"

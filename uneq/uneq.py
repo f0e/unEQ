@@ -1,5 +1,6 @@
 import re
 import shlex
+import shutil
 from pathlib import Path
 
 from ffmpeg_progress_yield import FfmpegProgress
@@ -75,5 +76,8 @@ def uneq(input_path: Path, eq_file_path: Path):
 
         for ff_progress in ff.run_command_with_progress():
             progress.update(task, completed=ff_progress)
+
+    # Copy metadata (modified date etc)
+    shutil.copystat(input_path, output_path)
 
     console.print(f"Done, wrote output file to [dim]{output_path}[/dim]")

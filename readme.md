@@ -10,7 +10,7 @@ Counteracting this issue is pretty elegant though, you can just apply a new EQ t
 
 ## Use case - automatically fixing OBS recordings
 
-I've created a bash script that runs post-save in my OBS, which runs `uneq` to fix up the audio. This script is triggered by [my fork of obs-hadowplay](https://github.com/f0e/obs-hadowplay) which has a post-save script option, but I'm sure there are other methods for doing this too.
+I've created a Bash script that runs post-save in my OBS setup, which uses `uneq` to fix up the audio. This script is triggered by [my fork of obs-hadowplay](https://github.com/f0e/obs-hadowplay), which has a post-save script option - but I'm sure there are other methods for doing this too.
 
 ## Requirements
 
